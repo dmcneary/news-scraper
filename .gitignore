@@ -1,0 +1,6 @@
+[Dd]esktop.ini
+.env
+.env.test
+.npm
+.DS_Store
+node_modules/
