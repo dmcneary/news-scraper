@@ -6,35 +6,36 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/" id="top">Home</a>
+            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/" id="top">Home
-                    <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/">About</a>
+                <span class="sr-only">(current)</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
-            </li>
-            <li class="nav-item">
-                <a href="/scrape"><button type="button" class="btn btn-success ml-3">Scrape New Articles</button></a>
-            </li>
-            <li class="nav-item">
-                <a href="/clear"><button type="button" class="btn btn-success ml-3">Clear Articles</button></a>
+                <a class="btn btn-warning scrape-new">Scrape new articles</a>
             </li>
         </ul>
     </div>
 </nav>
 
-<div class="jumbotron text-center">
-    <div class="overlay">
-    </div>
-    <div class="background-image">
-    </div>
-    <div class="caption">
-        <h1>Radical headlines from</h1>
-        <p>The Radavist!</p>
+<div class="container">
+    <div class="alert alert-dark" role="alert">
+        <h3 class="alert-heading">About:</h3>
+        <p>This website was created as an exercise in utilizing mongoDB as a database, for scraping a website for content (in this case, a popular cycling blog).
+            Users are able to add notes to the scraped articles.</p>
+        <h3>Technologies used:</h3>
+        <ul>
+            <li>Bootstrap 4</li>
+            <li>Node.js and Express.js</li>
+            <li>Handlebars for server-side templating</li>
+            <li>Mongoose for database interfacing</li>
+        </ul>
+        <hr>
+        <p class="mb-0">Please visit the <a href="https://github.com/dmcneary/news-scraper" target="_blank">GitHub repository</a> and take a look at my <a href="http://dmcneary.github.io" target="blank">other projects</a></p>
     </div>
 </div>
-
-<div class="container-fluid article-section"></div>
 
 <div class="container-fluid">
     <footer class="footer row justify-content-between">
@@ -52,4 +53,4 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
-<script src="/app.js"></script>
+<script src="./app.js"></script>

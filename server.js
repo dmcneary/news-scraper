@@ -2,87 +2,28 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var axios = require("axios");
-var cheerio = require("cheerio");
-
-var db = require("./models");
-var PORT = process.env.PORT || 3000;
+var exhbs = require("express-handlebars");
+var PORT = process.env.PORT || 27017;
 var app = express();
+var htmlRoutes = require("./routes/htmlRoutes");
+var apiRoutes = require("./routes/apiRoutes");
 
 // middleware
 app.use(logger("dev"));
+app.engine("handlebars", exhbs({ extname: "handlebars", defaultLayout: "main", layoutsDir: __dirname + "/views/layouts/" }));
+app.set("view engine", "handlebars");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use("/", htmlRoutes);
+app.use("/", apiRoutes);
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI)
+//db
+var MONGODB_URI = process.env.MONGODB_URI;
+mongoose.connect(MONGODB_URI || "mongodb://localhost/mongoHeadlines", { useNewUrlParser: true }).catch(function(err){ console.log(err) })
 
-// routes
-// scrape
-app.get("/scrape", function(req, res) {
-  axios.get("http://www.theradavist.com/").then(function(response) {
-    var $ = cheerio.load(response.data);
-    $("header.reportage-header").each(function(i, element) {
-      var result = {};
-      result.title = $(this).children("a").text();
-      result.link = $(this).children("a").attr("href");
 
-      db.Article.create(result)
-        .then(function(dbArticle) {
-          console.log(dbArticle);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    });
-    res.send("Finished scraping articles.");
-  });
-});
-
-// get all articles from db
-app.get("/articles", function(req, res) {
-  db.Article.find({}).then(function(dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-// get article by id
-app.get("/articles/:id", function(req, res) {
-  db.Article.findOne({ _id: req.params.id })
-    .populate("note")
-    .then(function(dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-// Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function(req, res) {
-  // Create a new note and pass the req.body to the entry
-  db.Note.create(req.body)
-    .then(function(dbNote) {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-    })
-    .then(function(dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });
-});
-
-// Start the server
+// start
 app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
+  console.log("Scrapin' on port " + PORT + "!");
 });
