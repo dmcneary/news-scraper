@@ -6,68 +6,66 @@ var db = require("../models")
 
 // scrape
 router.get("/scrape", function(req, res) {
-    axios.get("http://www.theradavist.com/").then(function(response) {
-      var $ = cheerio.load(response.data);
-      $("articles-reportage > article").each(function(i, element) {
-        console.log($(this), $(element));
-        var result = {};
-        result.title = $(element).children("header > a").text();
-        result.link = $(element).children("a").attr("href")
-        result.imgLink = $(element).children("a").text();
-        console.log(result);
-
-        db.Article.create(result)
-          .then(function(dbArticle) {
-            console.log(dbArticle);
-            res.redirect("/");
-          })
-          .catch(function(err) {
-            console.log(err);
-          });
-      });
+  axios.get("https://www.apnews.com/").then(function(response) {
+    var $ = cheerio.load(response.data);
+    var toDbArr = [];
+    $(".FeedCard").each(function(i, element) {
+      var result = {};
+      result.title = $(element).children(".CardHeadline").children("a.headline").text();
+      result.link = $(element).children(".CardHeadline").children("a.headline").attr("href")
+      result.summary = $(element).children("a[data-key='story-link']").children("div.content").text();
+      //result.imgLink = $(element).children("a img").attr("src");
+      console.log(result);
+      toDbArr.push(result);
     });
-  });
+    db.Article.updateMany({}, { $set: toDbArr } );
+    res.redirect("/");
+  }).catch(function(err) {
+          console.log(err);
+  });  
+});
+
   
   // get all articles from db
-  router.get("/articles", function(req, res) {
-    db.Article.find({}).then(function(dbArticle) {
-        res.json(dbArticle);
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
-  });
+router.get("/articles", function(req, res) {
+  db.Article.find({}).then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
   
-  // get article by id
-  router.get("/articles/:id", function(req, res) {
-    db.Article.findOne({ _id: req.params.id })
-      .populate("note")
-      .then(function(dbArticle) {
-        res.json(dbArticle);
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
-  });
-  
-  // Route for saving/updating an Article's associated Note
-  router.post("/articles/:id", function(req, res) {
-    // Create a new note and pass the req.body to the entry
-    db.Note.create(req.body)
-      .then(function(dbNote) {
-        // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-        // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-        // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-      })
-      .then(function(dbArticle) {
-        // If we were able to successfully update an Article, send it back to the client
-        res.json(dbArticle);
-      })
-      .catch(function(err) {
-        // If an error occurred, send it to the client
-        res.json(err);
-      });
-  });
+// get article by id
+router.get("/articles/:id", function(req, res) {
+  db.Article.findOne({ _id: req.params.id })
+    .populate("comment")
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
 
-  module.exports = router;
+// Route for saving/updating an Article's associated Note
+router.post("/articles/:id", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+  db.Comment.create(req.body)
+    .then(function(dbComment) {
+      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
+      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbComment._id }, { new: true });
+    })
+    .then(function(dbArticle) {
+      // If we were able to successfully update an Article, send it back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+module.exports = router;

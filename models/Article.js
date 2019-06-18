@@ -3,12 +3,11 @@ var Schema = mongoose.Schema;
 
 var ArticleSchema = new Schema({
   title: {
-    type: String,
-    required: true
+    type: String
   },
   link: {
     type: String,
-    required: true
+    unique: true
   },
   imgLink: {
       type: String
@@ -16,11 +15,13 @@ var ArticleSchema = new Schema({
   summary: {
       type: String
   },
-  note: {
+  comment: {
     type: Schema.Types.ObjectId,
-    ref: "Note"
+    ref: "Comment"
   }
 });
+
+
 
 var Article = mongoose.model("Article", ArticleSchema);
 
