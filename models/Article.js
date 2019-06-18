@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var ArticleSchema = new Schema({
+var articleSchema = new Schema({
   title: {
     type: String
   },
@@ -19,10 +19,13 @@ var ArticleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Comment"
   }
-});
+}, { autoIndex: false } );
+
+articleSchema.index({link: 1})
 
 
 
-var Article = mongoose.model("Article", ArticleSchema);
+
+var Article = mongoose.model("Article", articleSchema);
 
 module.exports = Article;

@@ -15,10 +15,10 @@ router.get("/scrape", function(req, res) {
       result.link = $(element).children(".CardHeadline").children("a.headline").attr("href")
       result.summary = $(element).children("a[data-key='story-link']").children("div.content").text();
       //result.imgLink = $(element).children("a img").attr("src");
-      console.log(result);
-      toDbArr.push(result);
+      db.Article.create(result).catch(function(err) {
+        console.log("Error: " + err);
+      });
     });
-    db.Article.updateMany({}, { $set: toDbArr } );
     res.redirect("/");
   }).catch(function(err) {
           console.log(err);
