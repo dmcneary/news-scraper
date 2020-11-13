@@ -1,7 +1,7 @@
 $(document).ready(function () {
     //TODO: Article saving
     var articleContainer = $(".article-container");
-    $("btn.clear").on("click", handleArticleClear);
+    $("button.clear").on("click", handleArticleClear);
     $(".open-comments").on("click", renderComments);
     //$("button.save").on("click", handleArticleSave)
     $("#savenote").on("click", handleCommentSave);
