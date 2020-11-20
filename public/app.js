@@ -1,7 +1,16 @@
 $(document).ready(function () {
     //TODO: Article saving
+    //ALSO: clean up extraneous jQuery
     var articleContainer = $(".article-container");
-    $("button.clear").on("click", handleArticleClear);
+    $("button.clear").on("click", function () {
+        $(".article-container").empty();
+        $(".article-container").append(
+            "<div class='alert alert-warning text-center'>" +
+            "<h4>Cleared articles</h4>" +
+            "</div>"
+        )
+
+    });
     $(".open-comments").on("click", renderComments);
     //$("button.save").on("click", handleArticleSave)
     $("#savenote").on("click", handleCommentSave);
@@ -9,8 +18,6 @@ $(document).ready(function () {
     function initPage() {
         $.get("/articles").then(function (data) {
             articleContainer.empty();
-            console.log("Data received from DB:")
-            console.log(data);
             if (data && data.length) { renderArticles(data); }
             else { renderEmpty(); }
         });
@@ -71,10 +78,6 @@ $(document).ready(function () {
                     $("#bodyinput").val(data.note.body);
                 }*/
         });
-    }
-
-    function handleArticleClear() {
-        articleContainer.empty();
     }
 
     function handleCommentSave () {
