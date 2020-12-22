@@ -2,15 +2,7 @@ $(document).ready(function () {
     //TODO: Article saving
     //ALSO: clean up extraneous jQuery
     var articleContainer = $(".article-container");
-    $("button.clear").on("click", function () {
-        $(".article-container").empty();
-        $(".article-container").append(
-            "<div class='alert alert-warning text-center'>" +
-            "<h4>Cleared articles</h4>" +
-            "</div>"
-        )
-
-    });
+    $("button.clear").on("click", clearArticles);
     $(".open-comments").on("click", renderComments);
     //$("button.save").on("click", handleArticleSave)
     $("#savenote").on("click", handleCommentSave);
@@ -32,15 +24,21 @@ $(document).ready(function () {
     }
 
     function renderEmpty() {
-        var emptyAlert = $(
-            [
-                "<div class='alert alert-warning text-center'>",
-                "<h4>No articles to display</h4>",
-                "<h4>Try scraping some articles by clicking the button in the header</h4>",
-                "</div>"
-            ].join("")
+        articleContainer.append(
+            "<div class='alert alert-warning text-center'>" +
+            "<h4>No articles to display</h4>" +
+            "<h4>Try scraping some articles by clicking the button in the header</h4>" +
+            "</div>"
         );
-        articleContainer.append(emptyAlert);
+    }
+
+    function clearArticles () {
+        articleContainer.empty();
+        articleContainer.append(
+            "<div class='alert alert-warning text-center'>" +
+            "<h4>Cleared articles</h4>" +
+            "</div>"
+        );
     }
 
     function createCard(article) {
@@ -49,7 +47,7 @@ $(document).ready(function () {
             $("<h3>").append(
                 $("<a class='article-link' target='_blank' rel='noopener noreferrer'>")
                     .attr("href", article.link)
-                    .text(article.title),
+                    .text(article.title)
                 //$("<a class='btn btn-success save'>Save Article</a>")
             )
         );
@@ -63,14 +61,14 @@ $(document).ready(function () {
     function renderComments() {
         $("#display-comments").empty();
         var thisId = $(this).attr("data-_id");
-        console.log(thisId);
-        $.get("/articles/" + thisId).then(function(data) {
-                console.log(data);
-                $("#display-comments").append("<h2>" + data.title + "</h2>");
-                $("#display-comments").append("<input id='titleinput' name='title' placeholder='Comment headline...'>");
-                $("#display-comments").append("<textarea id='bodyinput' name='body' placeholder='Your comment..'></textarea>");
-                $("#display-comments").append("<button data-id='" + data._id + "' id='savenote'>Save Comment</button>");
-
+        $.get("/articles/" + thisId)
+            .then(function(data) {
+                $("#display-comments").append(
+                    "<h2>" + data.title + "</h2>" + 
+                    "<input id='titleinput' name='title' placeholder='Comment headline...'>" +
+                    "<textarea id='bodyinput' name='body' placeholder='Your comment..'></textarea>" +
+                    "<button data-id='" + data._id + "' id='savenote'>Save Comment</button>"
+                );
                 /*if (data.note) {
                     // Place the title of the note in the title input
                     $("#titleinput").val(data.note.title);
