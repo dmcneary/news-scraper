@@ -29,14 +29,14 @@ footer {
   background-color: #ffc107;
 }
 
-footer p, footer a {
-  position:relative;
-  top: 1.5rem;
+footer p {
+  padding: 1.6rem;
   font-weight: bold;
 }
 
 footer a, .navbar a {
   color: rgb(22, 13, 107);
+  padding: 1.6rem;
 }
 
 footer a:hover, .navbar a:hover {
@@ -45,6 +45,11 @@ footer a:hover, .navbar a:hover {
 
 footer a:visited, .navbar a:visited {
   color: darkgreen;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-around;
 }
 
 .jumbotron {
@@ -76,37 +81,16 @@ footer a:visited, .navbar a:visited {
 }
 
 .card .card-header {
+  background-color: #c0faa6;
   position: relative;
   padding-top: 30px;
   padding-bottom: 30px;
 }
 
-.card .card-header h3 {
-  color: white;
-}
-
-.card .card-header .btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-.card .card-header .btn.delete {
-  right: 160px;
-}
-
 .card .card-body {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .card .card-header .article-link {
-  color: white;
-  display: inline-block;
-  width: 80%;
-}
-
-.card .comment-link {
-  text-align: right;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  color: #333333;
 }

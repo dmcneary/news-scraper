@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     function createCard(article) {
         var card = $("<div class='card'>");
-        var cardHeader = $("<div class='card-header bg-danger'>").append(
+        var cardHeader = $("<div class='card-header'>").append(
             $("<h3>").append(
                 $("<a class='article-link' target='_blank' rel='noopener noreferrer'>")
                     .attr("href", article.link)
