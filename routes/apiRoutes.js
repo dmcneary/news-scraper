@@ -22,6 +22,7 @@ router.get("/scrape", function(req, res) {
         articles.push(result);
       }
     });
+    res.redirect("/");
     return articles;
   })
   .then(function(articles) {
@@ -35,7 +36,7 @@ router.get("/scrape", function(req, res) {
   
   // get all articles from db
 router.get("/articles", function(req, res) {
-  db.Article.find().sort({ _id: -1 })
+  db.Article.find().limit(20).sort({ _id: -1 })
   .then(function(dbArticle) {
       return res.json(dbArticle);
     });
