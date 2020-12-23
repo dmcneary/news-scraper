@@ -35,15 +35,14 @@ html {
   }
   
   .navbar {
-    margin-bottom: 0;
+    margin-bottom: 1rem;
+    background-color: #ffc107;
+    color: whitesmoke;
   }
 
   .navbar-brand {
-    vertical-align: center;
-  }
-
-  .navbar a {
-    padding-top: 10px;
+    font-weight: bolder;
+    text-shadow: 2px 1px black;
   }
   
   .jumbotron {
@@ -56,8 +55,6 @@ html {
     background-image: url("../images/jumbobackground.jpg");
     background-size: cover;
   }
-  
-
   
   .jumbotron h1 {
     position: absolute;

@@ -18,7 +18,9 @@ router.get("/scrape", function(req, res) {
       result.link = home + $(element).children("a[data-key='story-link']").attr("href");
       result.summary = $(element).children("a[data-key='story-link']").children("div.content").children("p").text();
       //result.imgLink = $(element).children("a img").attr("src");
-      articles.push(result);
+      if (result.title && result.link) {
+        articles.push(result);
+      }
     });
     return articles;
   })
