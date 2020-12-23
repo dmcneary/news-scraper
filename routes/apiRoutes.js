@@ -7,32 +7,35 @@ var db = require("../models")
 // scrape
 router.get("/scrape", function(req, res) {
   const home = "https://apnews.com";
-  axios.get(home).then(function(response) {
+  axios.get(home)
+  .then(function(response) {
     var $ = cheerio.load(response.data);
-    $("article.cards").children("div[data-key='feed-card-wire-story-with-image']").each(function(i, element) {
+    var articles = [];
+    $("article.cards").children("div[data-key='feed-card-wire-story-with-image']")
+    .each(function(i, element) {
       var result = {};
       result.title = $(element).children(".CardHeadline").children("a[data-key='card-headline']").children("h1").text();
       result.link = home + $(element).children("a[data-key='story-link']").attr("href");
       result.summary = $(element).children("a[data-key='story-link']").children("div.content").children("p").text();
       //result.imgLink = $(element).children("a img").attr("src");
-      db.Article.create(result).catch(function(err) {
-        console.log("Error: " + err);
-      });
+      articles.push(result);
     });
-    res.redirect("/");
-  }).catch(function(err) {
-          console.log(err);
+    return articles;
+  })
+  .then(function(articles) {
+    return db.Article.create(articles);
+  })
+  .catch(function(err) {
+    console.log(err);
   });  
 });
 
   
   // get all articles from db
 router.get("/articles", function(req, res) {
-  db.Article.find({}).then(function(dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      res.json(err);
+  db.Article.find().sort({ _id: -1 })
+  .then(function(dbArticle) {
+      return res.json(dbArticle);
     });
 });
   

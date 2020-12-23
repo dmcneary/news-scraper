@@ -53,35 +53,23 @@ html {
     padding: 0;
     font-family: "Helvetica";
     box-shadow: 10px 5px 20px 2px rgb(214, 181, 108);
-  }
-  
-  .jumbotron .background-image {
-    height: 100%;
     background-image: url("../images/jumbobackground.jpg");
     background-size: cover;
   }
   
-  .jumbotron .caption {
+
+  
+  .jumbotron h1 {
     position: absolute;
     top: 30%;
     width: 100%;
     text-align: center;
-  }
-  
-  .jumbotron .caption h1,
-  .jumbotron .caption p {
+    font-size: 80px;
+    font-weight: 800;
     color: whitesmoke;
     text-shadow: 8px 4px black;
   }
   
-  .jumbotron h1 {
-    font-size: 80px;
-    font-weight: 800;
-  }
-  
-  .jumbotron p {
-    font-size: 30px;
-  }
   
   .article-container {
     padding-bottom: 25px;

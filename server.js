@@ -20,7 +20,7 @@ app.use("/", apiRoutes);
 
 //db
 var MONGODB_URI = process.env.MONGODB_URI;
-mongoose.connect(MONGODB_URI || "mongodb://127.0.0.1/ap-headlines", 
+mongoose.connect(MONGODB_URI || "mongodb://127.0.0.1:27017/ap-headlines", 
         { 
             useNewUrlParser: true,
             useUnifiedTopology: true
