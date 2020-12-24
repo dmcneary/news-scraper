@@ -50,6 +50,8 @@ footer a:visited, .navbar a:visited {
 .buttonContainer {
   display: flex;
   justify-content: space-around;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .jumbotron {
